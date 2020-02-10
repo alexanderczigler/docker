@@ -22,3 +22,11 @@ NodeJS docker image with full-icu installed globally.
 ```bash
 docker pull aczigler/node-full-icu
 ```
+
+## rethink-backup
+
+Docker-enabled backups for RethinkDB.
+
+```bash
+docker pull aczigler/rethink-backup
+```

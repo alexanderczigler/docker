@@ -45,3 +45,22 @@ jobs:
         
     - name: docker push
       run: docker push aczigler/node-full-icu:latest
+
+  rethink-backup:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: clone
+      uses: actions/checkout@v2
+
+    - name: docker login
+      env:
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+    - name: docker build
+      run: docker build rethink-backup -t aczigler/rethink-backup:latest
+        
+    - name: docker push
+      run: docker push aczigler/rethink-backup:latest
