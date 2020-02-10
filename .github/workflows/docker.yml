@@ -19,7 +19,6 @@ jobs:
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        IMAGE="aczigler/cron:latest"
-        docker build . --file Dockerfile --tag $IMAGE
-        echo $DOCKER_TOKEN | docker login docker.pkg.github.com --username "$DOCKER_USER" --password-stdin
-        docker push $IMAGE
+        docker build . --file Dockerfile --tag aczigler/cron:latest
+        echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+        docker push aczigler/cron:latest
