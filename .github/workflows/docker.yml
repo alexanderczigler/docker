@@ -1,4 +1,4 @@
-name: Docker build schedule
+name: docker
 
 on:
   schedule:
@@ -8,17 +8,21 @@ on:
       - master
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Docker Build
+
+    - name: clone
+      uses: actions/checkout@v2
+
+    - name: docker login
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-      run: |
-        docker build . --file Dockerfile --tag aczigler/cron:latest
-        echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
-        docker push aczigler/cron:latest
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+    - name: docker build
+      run: docker build . --file Dockerfile --tag aczigler/cron:latest
+        
+    - name: docker push
+      run: docker push aczigler/cron:latest
