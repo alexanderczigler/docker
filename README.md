@@ -2,6 +2,8 @@
 
 A debian-based image you can use to produce docker images running cronjob(s).
 
+This image is updated regularly.
+
 ## Using
 
 When building your image, base it on `docker.pkg.github.com/alexanderczigler/docker-cron/docker-cron:latest` and add your crontab.
