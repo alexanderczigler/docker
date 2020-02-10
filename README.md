@@ -14,3 +14,11 @@ docker pull aczigler/cron
 FROM aczigler/cron
 ADD ./crontab /etc/cron.d/crontab # NOTE: Keep the filename "crontab".
 ```
+
+## node-full-icu
+
+NodeJS docker image with full-icu installed globally.
+
+```bash
+docker pull aczigler/node-full-icu
+```
