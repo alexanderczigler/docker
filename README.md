@@ -30,3 +30,11 @@ Docker-enabled backups for RethinkDB.
 ```bash
 docker pull aczigler/rethink-backup
 ```
+
+## syncthing
+
+Run Syncthing mirrors in Docker!
+
+```bash
+docker pull aczigler/syncthing
+```
