@@ -16,6 +16,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker Build
+      env:
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
         IMAGE="docker.pkg.github.com/alexanderczigler/docker-cron/docker-cron:latest"
         docker build . --file Dockerfile --tag $IMAGE
