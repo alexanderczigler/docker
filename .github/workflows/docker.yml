@@ -27,6 +27,25 @@ jobs:
     - name: docker push
       run: docker push aczigler/cron:latest
 
+  node-alpine-builder:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: clone
+      uses: actions/checkout@v2
+
+    - name: docker login
+      env:
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+    - name: docker build
+      run: docker build node-alpine-builder -t aczigler/node-alpine-builder:latest
+        
+    - name: docker push
+      run: docker push aczigler/node-alpine-builder:latest
+
   node-full-icu:
     runs-on: ubuntu-latest
     steps:
