@@ -49,7 +49,7 @@ docker pull aczigler/rethink-backup
 
 ## syncthing
 
-Run Syncthing mirrors in Docker!
+Back when I used Syncthing I also had a couple of mirrors deployed in the cloud. This is a simple and effective way to add redundancy, ensuring your files are safely stored in different physical locations.
 
 ```bash
 docker pull aczigler/syncthing
