@@ -39,12 +39,12 @@ NodeJS docker image with full-icu installed globally.
 docker pull aczigler/node-full-icu
 ```
 
-## rethink-backup
+## rethinkdb-backup
 
-Docker-enabled backups for RethinkDB.
+Docker-enabled backups for RethinkDB. It was originally taken from Tutum and we (Iteam) have adapted and used it since then.
 
 ```bash
-docker pull aczigler/rethink-backup
+docker pull aczigler/rethinkdb-backup
 ```
 
 ## syncthing

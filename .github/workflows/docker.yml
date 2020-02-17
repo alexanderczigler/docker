@@ -65,7 +65,7 @@ jobs:
     - name: docker push
       run: docker push aczigler/node-full-icu:latest
 
-  rethink-backup:
+  rethinkdb-backup:
     runs-on: ubuntu-latest
     steps:
 
@@ -79,10 +79,10 @@ jobs:
       run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
     - name: docker build
-      run: docker build rethink-backup -t aczigler/rethink-backup:latest
+      run: docker build rethinkdb-backup -t aczigler/rethinkdb-backup:latest
         
     - name: docker push
-      run: docker push aczigler/rethink-backup:latest
+      run: docker push aczigler/rethinkdb-backup:latest
   
   syncthing:
     runs-on: ubuntu-latest
