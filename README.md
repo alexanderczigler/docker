@@ -25,9 +25,14 @@ FROM aczigler/node-alpine-builder AS builder
 # Run npm install
 RUN npm install --production
 
+...
+
 FROM node:11-alpine AS runner
 
 # Copy output files from builder (only stuff needed for running your code)
+...
+
+CMD node index.js
 
 ```
 
