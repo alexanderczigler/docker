@@ -19,6 +19,7 @@ jobs:
 
   push:
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - name: docker login
         env:
