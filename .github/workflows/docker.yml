@@ -2,103 +2,80 @@ name: docker
 
 on:
   schedule:
-  - cron:  '0 3 * * 1'
+    - cron: "0 3 * * 1"
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
-  cron:
-    runs-on: ubuntu-latest
-    steps:
-
-    - name: clone
-      uses: actions/checkout@v2
-
-    - name: docker login
-      env:
-        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
-
-    - name: docker build
-      run: docker build cron -t aczigler/cron:latest
-        
-    - name: docker push
-      run: docker push aczigler/cron:latest
-
   node-alpine-builder:
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@v2
 
-    - name: clone
-      uses: actions/checkout@v2
+      - name: docker login
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
-    - name: docker login
-      env:
-        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+      - name: docker build
+        run: docker build node-alpine-builder -t aczigler/node-alpine-builder:latest
 
-    - name: docker build
-      run: docker build node-alpine-builder -t aczigler/node-alpine-builder:latest
-        
-    - name: docker push
-      run: docker push aczigler/node-alpine-builder:latest
+      - name: docker push
+        run: docker push aczigler/node-alpine-builder:latest
 
   node-full-icu:
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@v2
 
-    - name: clone
-      uses: actions/checkout@v2
+      - name: docker login
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
-    - name: docker login
-      env:
-        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+      - name: docker build
+        run: docker build node-full-icu -t aczigler/node-full-icu:latest
 
-    - name: docker build
-      run: docker build node-full-icu -t aczigler/node-full-icu:latest
-        
-    - name: docker push
-      run: docker push aczigler/node-full-icu:latest
+      - name: docker push
+        run: docker push aczigler/node-full-icu:latest
 
   rethinkdb-backup:
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@v2
 
-    - name: clone
-      uses: actions/checkout@v2
+      - name: docker login
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
-    - name: docker login
-      env:
-        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+      - name: docker build
+        run: docker build rethinkdb-backup -t aczigler/rethinkdb-backup:latest
 
-    - name: docker build
-      run: docker build rethinkdb-backup -t aczigler/rethinkdb-backup:latest
-        
-    - name: docker push
-      run: docker push aczigler/rethinkdb-backup:latest
-  
+      - name: docker push
+        run: docker push aczigler/rethinkdb-backup:latest
+
   syncthing:
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@v2
 
-    - name: clone
-      uses: actions/checkout@v2
+      - name: docker login
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
-    - name: docker login
-      env:
-        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-      run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+      - name: docker build
+        run: docker build syncthing -t aczigler/syncthing:latest
 
-    - name: docker build
-      run: docker build syncthing -t aczigler/syncthing:latest
-        
-    - name: docker push
-      run: docker push aczigler/syncthing:latest
+      - name: docker push
+        run: docker push aczigler/syncthing:latest

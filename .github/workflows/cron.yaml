@@ -1,0 +1,30 @@
+name: docker
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: docker build cron -t aczigler/cron:latest
+
+  push:
+    needs: build
+    steps:
+      - name: docker login
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+      - name: docker push
+        run: docker push aczigler/cron:latest
