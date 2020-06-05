@@ -44,12 +44,12 @@ NodeJS docker image with full-icu installed globally.
 docker pull aczigler/node-full-icu
 ```
 
-## rethinkdb-backup
+## postgres-backup
 
-Docker-enabled backups for RethinkDB. It was originally taken from Tutum and we (Iteam) have adapted and used it since then.
+Docker-enabled backups for postgres. Capable of uploading backups to S3 and sftp as well as saving them locally.
 
 ```bash
-docker pull aczigler/rethinkdb-backup
+docker pull aczigler/postgres-backup
 ```
 
 ## syncthing
