@@ -8,7 +8,7 @@ on:
       - master
 
 jobs:
-  build:
+  push:
     runs-on: ubuntu-latest
     steps:
       - name: clone
@@ -17,10 +17,6 @@ jobs:
       - name: docker build
         run: docker build cron -t aczigler/cron:latest
 
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: docker login
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
