@@ -15,7 +15,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build postgres-backup -t aczigler/postgres-backup:latest
+        run: |
+          docker build postgres-backup -t aczigler/postgres-backup:latest
+          echo "* * * * * /bin/sh /backup.sh >> /var/log/cron.log" > postgres-backup/crontab
+          echo "* * * * * /bin/sh /sync.sh >> /var/log/cron.log" >> postgres-backup/crontab
+          echo "# empty line" >> postgres-backup/crontab
+          docker build postgres-backup -t aczigler/postgres-backup:every-minute
 
       - name: docker login
         env:
@@ -24,4 +29,6 @@ jobs:
         run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
       - name: docker push
-        run: docker push aczigler/postgres-backup:latest
+        run: |
+          docker push aczigler/postgres-backup:latest
+          docker push aczigler/postgres-backup:every-minute
