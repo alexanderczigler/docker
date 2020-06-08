@@ -36,6 +36,8 @@ Moreover, if you link `aczigler/postgres-backup` to a postgres container with an
     NO_CRON               if set, do not start cron. Must be used with INIT_BACKUP to run a single backup and then exit
     S3_BUCKET             the name of the Space where backups are synced
     S3_DIR                the dir where to sync the backup folder
+    S3_HOST_BASE:         sometimes called s3 endpoint
+    S3_HOST_BUCKET:       bucket url template string
     AWS_ACCESS_KEY_ID     the access key used to connect to the Space
     AWS_SECRET_ACCESS_KEY the secret used to connect to the Space
 

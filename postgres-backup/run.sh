@@ -69,10 +69,14 @@ elif [ -n "${INIT_RESTORE_LATEST}" ]; then
     ls -d -1 /backup/* | tail -1 | xargs /restore.sh
 fi
 
+# Setup s3cmd
+echo "host_base = ${S3_HOST_BASE}" >> /root/.s3cfg
+echo "host_bucket = ${S3_HOST_BUCKET}" >> /root/.s3cfg
+
 printenv > /etc/environment
 crontab /etc/cron.d/crontab
 chmod -R 0644 /etc/cron.d
 cron
-touch /var/log/cron.log
 
+touch /var/log/cron.log
 tail -f /var/log/cron.log
