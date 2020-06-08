@@ -1,25 +1,40 @@
 # postgres-backup
 
-This image runs pg_dump to backup data using cronjob to folder `/backup`. Backups are named with date and time, the latest backup is linked to `/backup/latest.psql.gz`.
+This image can be used to run scheduled backups of a Postgres database. It stores the backups locally and gives you the option to also sync backup files to sftp and/or s3 compatible storage.
 
-Uses Alpine Linux for a small (36 MB) image.
+Backups are stored in `/backup` and the latest backup is linked to `/backup/latest.psql.gz`. It is recommended that you mount /backup as a persistent volume so that the container (or pod) itself remains replaceable.
 
-## Usage:
+## tags
 
-    docker run -d \
-        --env PG_HOST=postgresdb.host \
-        --env PG_PORT=5432 \
-        --env PG_USER=admin \
-        --env PG_PASS=password \
-        --volume host.folder:/backup
-        aczigler/postgres-backup
+There are two images - `latest` is configured to run every six hours and `every-minute` runs every minute so that you can test your setup easily.
 
-Moreover, if you link `aczigler/postgres-backup` to a postgres container with an alias named postgres, this image has defaults that will connect to `postgres` on port 5432 with user `root` and no password.
+```bash
+docker pull aczigler/postgres-backup:latest
+docker pull aczigler/postgres-backup:every-minute # for testing (or rather frequent backups)
+```
 
-    docker run -d -e PG_ALLOW_EMPTY_PASSWORD=true --name postgresdb postgres
-    docker run -d --link postgresdb:postgresdb -v host.folder:/backup aczigler/postgres-backup
+## example
 
-## Parameters
+The following yaml snippet shows you how it can look in a docker compose or swarm stack, with sync to Digital Ocean Spaces enabled.
+
+```yaml
+postgres-backup:
+  image: aczigler/postgres-backup
+  environment:
+    PG_DB: GO
+    PG_HOST: postgres
+    PG_PASS: postgrespassword
+    PG_PORT: 5432
+    PG_USER: postgres
+    S3_HOST_BASE: ams3.digitaloceanspaces.com
+    S3_HOST_BUCKET: "%(bucket)s.ams3.digitaloceanspaces.com"
+    S3_BUCKET: postgres-backup
+    S3_DIR: test
+    AWS_ACCESS_KEY_ID: ABC123DEF
+    AWS_SECRET_ACCESS_KEY: a1b2c3d4e5
+```
+
+## environment
 
     UID                   the user id, default: 65534
     GID                   the group id, default: 65534
@@ -41,24 +56,38 @@ Moreover, if you link `aczigler/postgres-backup` to a postgres container with an
     AWS_ACCESS_KEY_ID     the access key used to connect to the Space
     AWS_SECRET_ACCESS_KEY the secret used to connect to the Space
 
-## Restore from a backup
+## restore data
 
-See the list of backups, you can run:
+### recent
 
-    docker exec postgres-backup ls /backup
+When resting, I recommend that you exec into the container or pod.
 
-To restore database from a certain backup, simply run:
+```bash
+docker exec -it postgres-backup /bin/bash # docker
+kubectl -n my-namespace exec -it postgres-backup /bin/bash # kubernetes
 
-    docker exec postgres-backup /restore.sh /backup/2020-01-01_171901.psql.gz
+# list backups
+cd /backup
+ls
 
-### Restoring a very old backup
+# restore a backup
+sh /restore.sh /backup/2020-01-01_171901.psql.gz
+```
 
-If you need to fetch a backup that is no longer stored in the running container, you can exec into the container/pod and use s3cmd to download it.
+### older
+
+If you need to fetch a backup that is no longer stored in the running container, you can exec into the container/pod and use s3cmd or sftp to download it. (This, of course, requires that you setup s3 or sftp sync in the first place.)
 
 ```bash
 kubectl -n my-namespace exec -it postgres /bin/bash
 cd /backup
+
+# list remote backups
 s3cmd ls s3://my-bucket/postgres/local/backup/
+
+# get a remote backup (called 2020-01-01_133700.psql.gz in this example)
 s3cmd get s3://my-bucket/postgres/local/backup/2020-01-01_133700.psql.gz
+
+# restore the backup
 sh /restore.sh /backup/2020-01-01_133700.psql.gz
 ```
