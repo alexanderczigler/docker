@@ -49,7 +49,7 @@ See the list of backups, you can run:
 
 To restore database from a certain backup, simply run:
 
-    docker exec postgres-backup /restore.sh /backup/2015-08-06_171901.psql.gz
+    docker exec postgres-backup /restore.sh /backup/2020-01-01_171901.psql.gz
 
 ### Restoring a very old backup
 
@@ -59,7 +59,6 @@ If you need to fetch a backup that is no longer stored in the running container,
 kubectl -n my-namespace exec -it postgres /bin/bash
 cd /backup
 s3cmd ls s3://my-bucket/postgres/local/backup/
-s3cmd get s3://my-bucket/postgres/local/backup/2020-01-08_133700.psql.gz
-sh /restore.sh /backup/2020-01-08_133700.psql.gz
+s3cmd get s3://my-bucket/postgres/local/backup/2020-01-01_133700.psql.gz
+sh /restore.sh /backup/2020-01-01_133700.psql.gz
 ```
-
