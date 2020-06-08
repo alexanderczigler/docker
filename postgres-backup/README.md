@@ -12,12 +12,12 @@ Uses Alpine Linux for a small (36 MB) image.
         --env PG_USER=admin \
         --env PG_PASS=password \
         --volume host.folder:/backup
-        stffabi/postgres-backup
+        aczigler/postgres-backup
 
-Moreover, if you link `stffabi/postgres-backup` to a postgres container with an alias named postgres, this image has defaults that will connect to `postgres` on port 5432 with user `root` and no password.
+Moreover, if you link `aczigler/postgres-backup` to a postgres container with an alias named postgres, this image has defaults that will connect to `postgres` on port 5432 with user `root` and no password.
 
     docker run -d -e PG_ALLOW_EMPTY_PASSWORD=true --name postgresdb postgres
-    docker run -d --link postgresdb:postgresdb -v host.folder:/backup stffabi/postgres-backup
+    docker run -d --link postgresdb:postgresdb -v host.folder:/backup aczigler/postgres-backup
 
 ## Parameters
 
@@ -61,6 +61,3 @@ s3cmd get s3://my-bucket/postgres/local/backup/2020-01-08_133700.psql.gz
 sh /restore.sh /backup/2020-01-08_133700.psql.gz
 ```
 
-## Support
-
-Add a [GitHub issue](https://github.com/stffabi/docker-postgres-backup/issues).
