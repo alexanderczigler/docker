@@ -56,8 +56,8 @@ If you need to fetch a backup that is no longer stored in the running container,
 ```bash
 kubectl -n my-namespace exec -it postgres /bin/bash
 cd /backup
-s3cmd ls s3://v3vo/postgres/local/backup/
-s3cmd get s3://v3vo/postgres/local/backup/2020-01-08_133700.psql.gz
+s3cmd ls s3://my-bucket/postgres/local/backup/
+s3cmd get s3://my-bucket/postgres/local/backup/2020-01-08_133700.psql.gz
 sh /restore.sh /backup/2020-01-08_133700.psql.gz
 ```
 
