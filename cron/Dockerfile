@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:buster
 LABEL maintainer="alexander@iteam.se"
 
 RUN apt-get update
