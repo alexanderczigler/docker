@@ -2,10 +2,16 @@ FROM aczigler/cron
 
 RUN mkdir /backup
 
+# Prepare apt
+RUN apt-get update && apt-get install -y gnupg
+
+# Install s3cmd from backports
+RUN sh -c 'echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list.d/backports.list'
+RUN apt-get update && apt-get install -y s3cmd/buster-backports
+
 # Install deps
 RUN apt-get update && \
-    apt-get -y install tzdata openssl wget lsb-release netcat \
-    s3cmd curl
+    apt-get -y install tzdata openssl wget lsb-release netcat curl
 
 # Install PostgreSQL 11
 RUN wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add -
