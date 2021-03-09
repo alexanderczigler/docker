@@ -56,11 +56,11 @@ postgres-backup:
     AWS_ACCESS_KEY_ID     the access key used to connect to the Space
     AWS_SECRET_ACCESS_KEY the secret used to connect to the Space
 
-## restore data
+## Restoring a backup
 
-### recent
+### Recent
 
-When resting, I recommend that you exec into the container or pod.
+When restoring, I recommend that you exec into the container or pod.
 
 ```bash
 docker exec -it postgres-backup /bin/bash # docker
@@ -74,7 +74,7 @@ ls
 sh /restore.sh /backup/2020-01-01_171901.psql.gz
 ```
 
-### older
+### Older
 
 If you need to fetch a backup that is no longer stored in the running container, you can exec into the container/pod and use s3cmd or sftp to download it. (This, of course, requires that you setup s3 or sftp sync in the first place.)
 
