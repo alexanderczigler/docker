@@ -1,4 +1,4 @@
-FROM node:11-alpine
+FROM node:16-alpine
 LABEL maintainer="alexander@iteam.se"
 
 RUN apk --no-cache add --virtual native-deps g++ gcc libgcc libstdc++ linux-headers make python
