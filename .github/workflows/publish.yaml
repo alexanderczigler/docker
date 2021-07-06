@@ -1,0 +1,43 @@
+name: publish
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  push:
+    branches:
+      - master
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: docker build cron -t docker.pkg.github.com/alexanderczigler/docker/cron
+
+      - name: docker push
+        run: |
+          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          docker push docker.pkg.github.com/alexanderczigler/docker/cron
+
+  postgres-backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: |
+          docker build postgres-backup -t docker.pkg.github.com/alexanderczigler/docker/postgres-backup:latest
+          echo "* * * * * /bin/sh /backup.sh >> /var/log/cron.log" > postgres-backup/crontab
+          echo "* * * * * /bin/sh /sync.sh >> /var/log/cron.log" >> postgres-backup/crontab
+          echo "# empty line" >> postgres-backup/crontab
+          docker build postgres-backup -t docker.pkg.github.com/alexanderczigler/docker/postgres-backup:every-minute
+
+      - name: docker push
+        run: |
+          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          docker push docker.pkg.github.com/alexanderczigler/docker/postgres-backup:latest
+          docker push docker.pkg.github.com/alexanderczigler/docker/postgres-backup:every-minute
