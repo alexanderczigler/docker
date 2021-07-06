@@ -1,4 +1,4 @@
-name: publish
+name: Build & publish packages
 
 on:
   schedule:
@@ -8,6 +8,7 @@ on:
       - master
 
 jobs:
+
   cron:
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +22,34 @@ jobs:
         run: |
           echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
           docker push docker.pkg.github.com/alexanderczigler/docker/cron
+
+  node-alpine-builder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: docker build node-alpine-builder -t docker.pkg.github.com/alexanderczigler/docker/node-alpine-builder
+
+      - name: docker push
+        run: |
+          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          docker push docker.pkg.github.com/alexanderczigler/docker/node-alpine-builder
+
+  node-full-icu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: docker build node-full-icu -t docker.pkg.github.com/alexanderczigler/docker/node-full-icu
+
+      - name: docker push
+        run: |
+          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          docker push docker.pkg.github.com/alexanderczigler/docker/node-full-icu
 
   postgres-backup:
     runs-on: ubuntu-latest

@@ -1,17 +1,17 @@
 # docker
 
-This is a monorepo where I collect docker images and related utilities. Most, if not all, of these are rebuilt once a week and published on my Docker Hub profile: https://hub.docker.com/u/aczigler
+This is a monorepo where I collect docker images and related utilities. Most, if not all, of these are rebuilt once a week and published on my Docker Hub profile: https://hub.docker.com/u/docker.pkg.github.com/alexanderczigler/docker
 
 ## cron
 
 A debian-based image you can use to produce docker images running cronjob(s).
 
 ```bash
-docker pull aczigler/cron
+docker pull docker.pkg.github.com/alexanderczigler/docker/cron
 ```
 
 ```Dockerfile
-FROM aczigler/cron
+FROM docker.pkg.github.com/alexanderczigler/docker/cron
 ADD ./crontab /etc/cron.d/crontab # NOTE: Keep the filename "crontab".
 ```
 
@@ -20,7 +20,7 @@ ADD ./crontab /etc/cron.d/crontab # NOTE: Keep the filename "crontab".
 When using multi-layered builds, this image is handy for the build/compile step.
 
 ```Dockerfile
-FROM aczigler/node-alpine-builder AS builder
+FROM docker.pkg.github.com/alexanderczigler/docker/node-alpine-builder AS builder
 
 # Run npm install
 RUN npm install --production
@@ -41,7 +41,7 @@ CMD node index.js
 NodeJS docker image with full-icu installed globally.
 
 ```bash
-docker pull aczigler/node-full-icu
+docker pull docker.pkg.github.com/alexanderczigler/docker/node-full-icu
 ```
 
 ## postgres-backup
@@ -49,5 +49,5 @@ docker pull aczigler/node-full-icu
 Docker-enabled backups for postgres. Capable of uploading backups to S3 and sftp as well as saving them locally.
 
 ```bash
-docker pull aczigler/postgres-backup
+docker pull docker.pkg.github.com/alexanderczigler/docker/postgres-backup
 ```
