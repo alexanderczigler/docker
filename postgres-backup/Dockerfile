@@ -1,4 +1,5 @@
 FROM iteamacr/cron
+LABEL maintainer="alexander@iteam.se"
 
 RUN mkdir /backup
 
