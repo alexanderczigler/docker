@@ -9,8 +9,8 @@ Backups are stored in `/backup` and the latest backup is linked to `/backup/late
 There are two images - `latest` is configured to run every six hours and `every-minute` runs every minute so that you can test your setup easily.
 
 ```bash
-docker pull aczigler/postgres-backup:latest
-docker pull aczigler/postgres-backup:every-minute # for testing (or rather frequent backups)
+docker pull iteamacr/postgres-backup:latest
+docker pull iteamacr/postgres-backup:every-minute # for testing (or rather frequent backups)
 ```
 
 ## example
@@ -19,7 +19,7 @@ The following yaml snippet shows you how it can look in a docker compose or swar
 
 ```yaml
 postgres-backup:
-  image: aczigler/postgres-backup
+  image: iteamacr/postgres-backup
   environment:
     PG_DB: GO
     PG_HOST: postgres

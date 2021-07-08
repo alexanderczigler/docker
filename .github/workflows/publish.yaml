@@ -16,12 +16,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build cron -t docker.pkg.github.com/alexanderczigler/docker/cron
+        run: docker build cron -t iteamacr/docker/cron
 
       - name: docker push
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          docker push docker.pkg.github.com/alexanderczigler/docker/cron
+          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+          docker push iteamacr/docker/cron
 
   node-alpine-builder:
     runs-on: ubuntu-latest
@@ -30,12 +33,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build node-alpine-builder -t docker.pkg.github.com/alexanderczigler/docker/node-alpine-builder
+        run: docker build node-alpine-builder -t iteamacr/docker/node-alpine-builder
 
       - name: docker push
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          docker push docker.pkg.github.com/alexanderczigler/docker/node-alpine-builder
+          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+          docker push iteamacr/docker/node-alpine-builder
 
   node-full-icu:
     runs-on: ubuntu-latest
@@ -44,12 +50,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build node-full-icu -t docker.pkg.github.com/alexanderczigler/docker/node-full-icu
+        run: docker build node-full-icu -t iteamacr/docker/node-full-icu
 
       - name: docker push
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          docker push docker.pkg.github.com/alexanderczigler/docker/node-full-icu
+          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+          docker push iteamacr/docker/node-full-icu
 
   postgres-backup:
     runs-on: ubuntu-latest
@@ -59,14 +68,19 @@ jobs:
 
       - name: docker build
         run: |
-          docker build postgres-backup -t docker.pkg.github.com/alexanderczigler/docker/postgres-backup:latest
+          docker build postgres-backup -t iteamacr/docker/postgres-backup:latest
+          docker tag iteamacr/docker/postgres-backup:latest -t iteamacr/docker/postgres-backup:buster
           echo "* * * * * /bin/sh /backup.sh >> /var/log/cron.log" > postgres-backup/crontab
           echo "* * * * * /bin/sh /sync.sh >> /var/log/cron.log" >> postgres-backup/crontab
           echo "# empty line" >> postgres-backup/crontab
-          docker build postgres-backup -t docker.pkg.github.com/alexanderczigler/docker/postgres-backup:every-minute
+          docker build postgres-backup -t iteamacr/docker/postgres-backup:every-minute
 
       - name: docker push
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          echo "${{ secrets.GIT_HUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          docker push docker.pkg.github.com/alexanderczigler/docker/postgres-backup:latest
-          docker push docker.pkg.github.com/alexanderczigler/docker/postgres-backup:every-minute
+          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+          docker push iteamacr/docker/postgres-backup:buster
+          docker push iteamacr/docker/postgres-backup:latest
+          docker push iteamacr/docker/postgres-backup:every-minute
