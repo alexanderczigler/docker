@@ -1,4 +1,4 @@
-FROM aczigler/cron
+FROM iteamacr/cron
 
 RUN mkdir /backup
 
