@@ -40,6 +40,7 @@ jobs:
           docker build node-alpine-builder --build-arg NODE_VERSION=14 -t iteamacr/node-alpine-builder:14
           docker build node-alpine-builder --build-arg NODE_VERSION=15 -t iteamacr/node-alpine-builder:15
           docker build node-alpine-builder --build-arg NODE_VERSION=16 -t iteamacr/node-alpine-builder:16
+          docker tag iteamacr/node-alpine-builder:16 iteamacr/node-alpine-builder:latest
 
       - name: docker push
         env:
@@ -53,6 +54,7 @@ jobs:
           docker push iteamacr/node-alpine-builder:14
           docker push iteamacr/node-alpine-builder:15
           docker push iteamacr/node-alpine-builder:16
+          docker push iteamacr/node-alpine-builder:latest
 
   node-full-icu:
     runs-on: ubuntu-latest
@@ -68,6 +70,7 @@ jobs:
           docker build node-full-icu --build-arg NODE_VERSION=14 -t iteamacr/node-full-icu:14
           docker build node-full-icu --build-arg NODE_VERSION=15 -t iteamacr/node-full-icu:15
           docker build node-full-icu --build-arg NODE_VERSION=16 -t iteamacr/node-full-icu:16
+          docker tag iteamacr/node-full-icu:16 iteamacr/node-full-icu:latest
 
       - name: docker push
         env:
@@ -81,6 +84,7 @@ jobs:
           docker push iteamacr/node-full-icu:14
           docker push iteamacr/node-full-icu:15
           docker push iteamacr/node-full-icu:16
+          docker push iteamacr/node-full-icu:latest
 
   postgres-backup:
     needs: cron
