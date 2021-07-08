@@ -1,4 +1,4 @@
-ARG NODE_VERSION=11
+ARG NODE_VERSION=16
 
 FROM node:${NODE_VERSION}-stretch
 LABEL maintainer="alexander@iteam.se"
