@@ -12,27 +12,28 @@ jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
-      - name: clone
+      - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: docker build
+      - name: Build image
         run: docker build cron -t iteamacr/cron
 
-      - name: docker push
+      - name: Login to Docker Hub
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        run: |
-          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
-          docker push iteamacr/cron
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+      - name: Push image to Docker Hub
+        run: docker push iteamacr/cron
 
   node-alpine-builder:
     runs-on: ubuntu-latest
     steps:
-      - name: clone
+      - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: docker build
+      - name: Build images
         run: |
           docker build node-alpine-builder --build-arg NODE_VERSION=12 -t iteamacr/node-alpine-builder:12
           docker build node-alpine-builder --build-arg NODE_VERSION=13 -t iteamacr/node-alpine-builder:13
@@ -41,12 +42,14 @@ jobs:
           docker build node-alpine-builder --build-arg NODE_VERSION=16 -t iteamacr/node-alpine-builder:16
           docker tag iteamacr/node-alpine-builder:16 iteamacr/node-alpine-builder:latest
 
-      - name: docker push
+      - name: Login to Docker Hub
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+      - name: Push images to Docker Hub
         run: |
-          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
           docker push iteamacr/node-alpine-builder:12
           docker push iteamacr/node-alpine-builder:13
           docker push iteamacr/node-alpine-builder:14
@@ -57,10 +60,10 @@ jobs:
   node-full-icu:
     runs-on: ubuntu-latest
     steps:
-      - name: clone
+      - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: docker build
+      - name: Build images
         run: |
           docker build node-full-icu --build-arg NODE_VERSION=12 -t iteamacr/node-full-icu:12
           docker build node-full-icu --build-arg NODE_VERSION=13 -t iteamacr/node-full-icu:13
@@ -69,12 +72,14 @@ jobs:
           docker build node-full-icu --build-arg NODE_VERSION=16 -t iteamacr/node-full-icu:16
           docker tag iteamacr/node-full-icu:16 iteamacr/node-full-icu:latest
 
-      - name: docker push
+      - name: Login to Docker Hub
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+      - name: Push images to Docker Hub
         run: |
-          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
           docker push iteamacr/node-full-icu:12
           docker push iteamacr/node-full-icu:13
           docker push iteamacr/node-full-icu:14
@@ -86,10 +91,10 @@ jobs:
     needs: cron
     runs-on: ubuntu-latest
     steps:
-      - name: clone
+      - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: docker build
+      - name: Build images
         run: |
           docker build postgres-backup -t iteamacr/postgres-backup:latest
           docker tag iteamacr/postgres-backup:latest iteamacr/postgres-backup:buster
@@ -98,12 +103,14 @@ jobs:
           echo "# empty line" >> postgres-backup/crontab
           docker build postgres-backup -t iteamacr/postgres-backup:every-minute
 
-      - name: docker push
+      - name: Login to Docker Hub
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
+
+      - name: Push images to Docker Hub
         run: |
-          echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
           docker push iteamacr/postgres-backup:buster
           docker push iteamacr/postgres-backup:latest
           docker push iteamacr/postgres-backup:every-minute
