@@ -33,7 +33,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build node-alpine-builder -t iteamacr/node-alpine-builder
+        run: |
+          docker build node-alpine-builder --build-arg NODE_VERSION=11 -t iteamacr/node-alpine-builder:11
+          docker build node-alpine-builder --build-arg NODE_VERSION=12 -t iteamacr/node-alpine-builder:12
+          docker build node-alpine-builder --build-arg NODE_VERSION=13 -t iteamacr/node-alpine-builder:13
+          docker build node-alpine-builder --build-arg NODE_VERSION=14 -t iteamacr/node-alpine-builder:14
+          docker build node-alpine-builder --build-arg NODE_VERSION=15 -t iteamacr/node-alpine-builder:15
+          docker build node-alpine-builder --build-arg NODE_VERSION=16 -t iteamacr/node-alpine-builder:16
 
       - name: docker push
         env:
@@ -41,7 +47,12 @@ jobs:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
           echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
-          docker push iteamacr/node-alpine-builder
+          docker push iteamacr/node-alpine-builder:11
+          docker push iteamacr/node-alpine-builder:12
+          docker push iteamacr/node-alpine-builder:13
+          docker push iteamacr/node-alpine-builder:14
+          docker push iteamacr/node-alpine-builder:15
+          docker push iteamacr/node-alpine-builder:16
 
   node-full-icu:
     runs-on: ubuntu-latest
