@@ -70,7 +70,7 @@ jobs:
       - name: docker build
         run: |
           docker build postgres-backup -t iteamacr/postgres-backup:latest
-          docker tag iteamacr/postgres-backup:latest -t iteamacr/postgres-backup:buster
+          docker tag iteamacr/postgres-backup:latest iteamacr/postgres-backup:buster
           echo "* * * * * /bin/sh /backup.sh >> /var/log/cron.log" > postgres-backup/crontab
           echo "* * * * * /bin/sh /sync.sh >> /var/log/cron.log" >> postgres-backup/crontab
           echo "# empty line" >> postgres-backup/crontab
