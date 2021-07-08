@@ -1,17 +1,17 @@
 # docker
 
-This is a monorepo where I collect docker images and related utilities. Most, if not all, of these are rebuilt once a week and published on my Docker Hub profile: https://hub.docker.com/u/iteamacr/docker
+This is a monorepo where I collect docker images and related utilities. Most, if not all, of these are rebuilt once a week and published on my Docker Hub profile: https://hub.docker.com/u/iteamacr
 
 ## cron
 
 A debian-based image you can use to produce docker images running cronjob(s).
 
 ```bash
-docker pull iteamacr/docker/cron
+docker pull iteamacr/cron
 ```
 
 ```Dockerfile
-FROM iteamacr/docker/cron
+FROM iteamacr/cron
 ADD ./crontab /etc/cron.d/crontab # NOTE: Keep the filename "crontab".
 ```
 
@@ -20,7 +20,7 @@ ADD ./crontab /etc/cron.d/crontab # NOTE: Keep the filename "crontab".
 When using multi-layered builds, this image is handy for the build/compile step.
 
 ```Dockerfile
-FROM iteamacr/docker/node-alpine-builder AS builder
+FROM iteamacr/node-alpine-builder AS builder
 
 # Run npm install
 RUN npm install --production
@@ -41,7 +41,7 @@ CMD node index.js
 NodeJS docker image with full-icu installed globally.
 
 ```bash
-docker pull iteamacr/docker/node-full-icu
+docker pull iteamacr/node-full-icu
 ```
 
 ## postgres-backup
@@ -49,5 +49,5 @@ docker pull iteamacr/docker/node-full-icu
 Docker-enabled backups for postgres. Capable of uploading backups to S3 and sftp as well as saving them locally.
 
 ```bash
-docker pull iteamacr/docker/postgres-backup
+docker pull iteamacr/postgres-backup
 ```
