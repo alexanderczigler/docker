@@ -50,7 +50,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker build
-        run: docker build node-full-icu -t iteamacr/node-full-icu
+        run: |
+          docker build node-full-icu --build-arg NODE_VERSION=11 -t iteamacr/node-full-icu:11
+          docker build node-full-icu --build-arg NODE_VERSION=12 -t iteamacr/node-full-icu:12
+          docker build node-full-icu --build-arg NODE_VERSION=13 -t iteamacr/node-full-icu:13
+          docker build node-full-icu --build-arg NODE_VERSION=14 -t iteamacr/node-full-icu:14
+          docker build node-full-icu --build-arg NODE_VERSION=15 -t iteamacr/node-full-icu:15
+          docker build node-full-icu --build-arg NODE_VERSION=16 -t iteamacr/node-full-icu:16
 
       - name: docker push
         env:
@@ -58,7 +64,12 @@ jobs:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
           echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
-          docker push iteamacr/node-full-icu
+          docker push iteamacr/node-full-icu:11
+          docker push iteamacr/node-full-icu:12
+          docker push iteamacr/node-full-icu:13
+          docker push iteamacr/node-full-icu:14
+          docker push iteamacr/node-full-icu:15
+          docker push iteamacr/node-full-icu:16
 
   postgres-backup:
     needs: cron
