@@ -1,4 +1,6 @@
-FROM debian:buster
+ARG debian_version=buster
+
+FROM debian:${debian_version}
 LABEL maintainer="alexander@iteam.se"
 
 RUN apt-get update

@@ -16,7 +16,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build cron -t iteamacr/cron
+        run: |
+          docker build --build-arg debian_version=buster cron -t iteamacr/cron:buster
+          docker build --build-arg debian_version=oldstable cron -t iteamacr/cron:oldstable
 
       - name: Login to Docker Hub
         env:
@@ -25,7 +27,9 @@ jobs:
         run: echo $DOCKER_TOKEN | docker login --username "$DOCKER_USER" --password-stdin
 
       - name: Push image to Docker Hub
-        run: docker push iteamacr/cron
+        run: |
+          docker push iteamacr/cron:buster
+          docker push iteamacr/cron:oldstable
 
   node-alpine-builder:
     runs-on: ubuntu-latest
